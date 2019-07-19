@@ -1,9 +1,10 @@
-var express = require("express");
 var session = require("express-session");
-require("dotenv").config()
+// require("dotenv").config()
 // Requiring passport as we've configured it
-var passport = require("./config/passport/passport");
-
+// var passport = require("passport")
+var bodyParser = require('body-parser')
+var express = require("express")
+// var bCrypt = require('bcrypt-nodejs');
 
 // Setting up port and requiring models for syncing
 var PORT = process.env.PORT || 8080;
@@ -13,29 +14,31 @@ var db = require("./models");
 var app = express();
 var exphbs = require('express-handlebars')
 //Routes
-require('./routes/auth.js')(app,passport);
+// require('./routes/auth.js')(app,passport);
 
 //load passport strategies
-require('./config/passport/passport.js')(passport, db.user);
+// require('./config/passport/passport.js')(passport, db.user);
+// var generateHash = function (password) {
+
+//   return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
+
+// };
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 // We need to use sessions to keep track of our user's login status
-app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-//For Handlebars
-app.set('views', './app/views')
-app.engine('hbs', exphbs({
-    extname: '.hbs'
-}));
-app.set('view engine', '.hbs');
+
 
 // Requiring our routes
-require("./routes/html-routes.js")(app);
+// require("./routes/html-routes.js")(app);
 require("./routes/api-routes.js")(app);
+
 
 // Syncing our database and logging a message to the user upon success
 db.sequelize.sync().then(function() {
