@@ -39,18 +39,18 @@ module.exports = function(app){
     app.post("/api/player/signin", function(req,res){
         db.user.findOne({
             where:{
-                email: req.body.email
+              email: req.body.email
             }
         }).then(function(playerinfo){
             if(!playerinfo){
                 res.json([{ message: "This Email has not yet been registered !"}])
              } else{
                 bCrypt.compare(req.body.password, playerinfo.password, function(err,response){
-                    if(err){
-                      return(err)
-                    }
+                  if(err){
+                    return(err)
+                  }
                 })
-                 res.json([{username:playerinfo.username, id:playerinfo.id}])
+             res.json([{username:playerinfo.username, id:playerinfo.id}])
             }
         })
     })
